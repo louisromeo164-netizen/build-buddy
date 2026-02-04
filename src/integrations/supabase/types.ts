@@ -216,14 +216,102 @@ export type Database = {
         }
         Relationships: []
       }
+      transactions: {
+        Row: {
+          booking_id: string
+          created_at: string
+          driver_amount: number
+          driver_id: string
+          id: string
+          passenger_id: string
+          platform_commission: number
+          seats_count: number
+          status: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          driver_amount?: number
+          driver_id: string
+          id?: string
+          passenger_id: string
+          platform_commission?: number
+          seats_count?: number
+          status?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          driver_amount?: number
+          driver_id?: string
+          id?: string
+          passenger_id?: string
+          platform_commission?: number
+          seats_count?: number
+          status?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      platform_stats: {
+        Row: {
+          daily_commission: number | null
+          total_bookings: number | null
+          total_commission: number | null
+          total_rides: number | null
+          total_users: number | null
+          weekly_commission: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      app_role: "admin" | "user"
       booking_status: "pending" | "confirmed" | "cancelled" | "completed"
       ride_status: "available" | "full" | "completed" | "cancelled"
       user_role: "driver" | "passenger"
@@ -354,6 +442,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "user"],
       booking_status: ["pending", "confirmed", "cancelled", "completed"],
       ride_status: ["available", "full", "completed", "cancelled"],
       user_role: ["driver", "passenger"],
