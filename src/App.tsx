@@ -17,6 +17,8 @@ import SearchRides from "./pages/passenger/SearchRides";
 import BookRide from "./pages/passenger/BookRide";
 import MyBookings from "./pages/passenger/MyBookings";
 import Profile from "./pages/Profile";
+import AdminAuth from "./pages/admin/AdminAuth";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -69,7 +71,11 @@ function AppRoutes() {
       } />
       <Route path="/auth/driver" element={<DriverAuth />} />
       <Route path="/auth/passenger" element={<PassengerAuth />} />
+      <Route path="/auth/admin" element={<AdminAuth />} />
       <Route path="/onboarding" element={<Onboarding />} />
+
+      {/* Admin routes */}
+      <Route path="/admin" element={<AdminDashboard />} />
 
       {/* Driver routes */}
       <Route path="/driver" element={

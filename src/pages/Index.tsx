@@ -15,11 +15,11 @@ const Index = () => {
           <div className="text-center max-w-3xl mx-auto animate-fade-in">
             <div className="inline-flex items-center gap-2 bg-accent px-4 py-2 rounded-full mb-6">
               <MapPin className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">Ride-sharing in Uganda</span>
+              <span className="text-sm font-medium">dailyRoute Uganda</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Share Rides,
-              <span className="text-primary"> Save Money</span>
+              <span className="text-primary">dailyRoute</span>
+              <br />Share Rides, Save Money
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               Connect with drivers and passengers heading your way. 
@@ -31,7 +31,7 @@ const Index = () => {
 
       {/* Role Selection */}
       <div className="container mx-auto px-4 py-12">
-        <h2 className="text-2xl font-semibold text-center mb-8">How do you want to use RideShare?</h2>
+        <h2 className="text-2xl font-semibold text-center mb-8">How do you want to use dailyRoute?</h2>
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {/* Driver Card */}
           <Card 
@@ -105,7 +105,7 @@ const Index = () => {
       {/* Features */}
       <div className="bg-muted/50 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-center mb-12">Why Choose RideShare?</h2>
+          <h2 className="text-2xl font-semibold text-center mb-12">Why Choose dailyRoute?</h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
@@ -141,7 +141,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-8 border-t">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© 2026 RideShare Uganda. Safe rides, happy journeys.</p>
+          <p>© 2026 dailyRoute Uganda. Safe rides, happy journeys.</p>
         </div>
       </footer>
     </div>
