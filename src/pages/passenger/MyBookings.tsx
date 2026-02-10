@@ -36,7 +36,7 @@ export default function MyBookings() {
           *,
           ride:rides(
             *,
-            driver_profile:profiles!rides_driver_id_fkey(*),
+            driver_profile:profiles!rides_driver_id_fkey(user_id, full_name, avatar_url, role),
             driver_details:driver_details!driver_details_user_id_fkey(*)
           )
         `)
