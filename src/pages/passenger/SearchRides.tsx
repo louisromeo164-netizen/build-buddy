@@ -26,7 +26,7 @@ export default function SearchRides() {
       .from('rides')
       .select(`
         *,
-        driver_profile:profiles!rides_driver_id_fkey(*),
+        driver_profile:profiles!rides_driver_id_fkey(user_id, full_name, avatar_url, role),
         driver_details:driver_details!driver_details_user_id_fkey(*)
       `)
       .eq('status', 'available')
