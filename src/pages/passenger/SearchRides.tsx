@@ -19,7 +19,8 @@ export default function SearchRides() {
   const [searched, setSearched] = useState(false);
 
   const MAX_SEARCH_LENGTH = 100;
-  const sanitizeSearch = (str: string) => str.trim().slice(0, MAX_SEARCH_LENGTH);
+  const escapeLike = (str: string) => str.replace(/[%_\\]/g, '\\$&');
+  const sanitizeSearch = (str: string) => escapeLike(str.trim().slice(0, MAX_SEARCH_LENGTH));
 
   const searchRides = async () => {
     setLoading(true);
