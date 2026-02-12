@@ -18,7 +18,8 @@ export default function SearchRides() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
-  const escapePattern = (str: string) => str.replace(/[%_\\]/g, '\\$&');
+  const MAX_SEARCH_LENGTH = 100;
+  const sanitizeSearch = (str: string) => str.trim().slice(0, MAX_SEARCH_LENGTH);
 
   const searchRides = async () => {
     setLoading(true);
@@ -36,13 +37,14 @@ export default function SearchRides() {
       .gte('departure_time', new Date().toISOString())
       .order('departure_time', { ascending: true });
 
-    if (from.trim()) {
-      const escaped = escapePattern(from.trim());
-      query = query.ilike('pickup_location', `%${escaped}%`);
+    const sanitizedFrom = sanitizeSearch(from);
+    const sanitizedTo = sanitizeSearch(to);
+
+    if (sanitizedFrom) {
+      query = query.ilike('pickup_location', `%${sanitizedFrom}%`);
     }
-    if (to.trim()) {
-      const escaped = escapePattern(to.trim());
-      query = query.ilike('destination', `%${escaped}%`);
+    if (sanitizedTo) {
+      query = query.ilike('destination', `%${sanitizedTo}%`);
     }
 
     const { data, error } = await query;
@@ -80,7 +82,7 @@ export default function SearchRides() {
                 placeholder="From (e.g., Kampala)"
                 className="pl-10"
                 value={from}
-                onChange={(e) => setFrom(e.target.value)}
+                onChange={(e) => setFrom(e.target.value.slice(0, MAX_SEARCH_LENGTH))}
               />
             </div>
             <div className="relative">
@@ -89,7 +91,7 @@ export default function SearchRides() {
                 placeholder="To (e.g., Entebbe)"
                 className="pl-10"
                 value={to}
-                onChange={(e) => setTo(e.target.value)}
+                onChange={(e) => setTo(e.target.value.slice(0, MAX_SEARCH_LENGTH))}
               />
             </div>
             <Button className="w-full" onClick={searchRides} disabled={loading}>
