@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import { useAdmin } from "@/hooks/useAdmin";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import DriverAuth from "./pages/auth/DriverAuth";
@@ -22,10 +23,11 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const queryClient = new QueryClient();
 
-function ProtectedRoute({ children, role }: { children: React.ReactNode; role?: 'driver' | 'passenger' }) {
+function ProtectedRoute({ children, role, adminOnly }: { children: React.ReactNode; role?: 'driver' | 'passenger'; adminOnly?: boolean }) {
   const { user, profile, loading } = useAuth();
+  const { isAdmin, loading: adminLoading } = useAdmin();
 
-  if (loading) {
+  if (loading || (adminOnly && adminLoading)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse text-muted-foreground">Loading...</div>
@@ -37,11 +39,15 @@ function ProtectedRoute({ children, role }: { children: React.ReactNode; role?: 
     return <Navigate to="/" replace />;
   }
 
-  if (!profile) {
+  if (adminOnly && !isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (!adminOnly && !profile) {
     return <Navigate to="/onboarding" replace />;
   }
 
-  if (role && profile.role !== role) {
+  if (role && profile && profile.role !== role) {
     return <Navigate to={profile.role === 'driver' ? '/driver' : '/passenger'} replace />;
   }
 
@@ -75,7 +81,9 @@ function AppRoutes() {
       <Route path="/onboarding" element={<Onboarding />} />
 
       {/* Admin routes */}
-      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/admin" element={
+        <ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>
+      } />
 
       {/* Driver routes */}
       <Route path="/driver" element={
