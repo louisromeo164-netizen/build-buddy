@@ -19,7 +19,9 @@ export function useAdmin() {
         .rpc('has_role', { _user_id: user.id, _role: 'admin' });
 
       if (error) {
-        console.error('Error checking admin role:', error);
+        if (import.meta.env.DEV) {
+          console.error('Error checking admin role:', error);
+        }
         setIsAdmin(false);
       } else {
         setIsAdmin(data === true);
