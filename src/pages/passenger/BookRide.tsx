@@ -67,14 +67,7 @@ export default function BookRide() {
 
       if (error) throw error;
 
-      // Update available seats
-      await supabase
-        .from('rides')
-        .update({ 
-          available_seats: ride.available_seats - seats,
-          status: ride.available_seats - seats === 0 ? 'full' : 'available'
-        })
-        .eq('id', ride.id);
+      // Seat updates are handled atomically by database trigger
 
       toast({
         title: 'Booking confirmed!',

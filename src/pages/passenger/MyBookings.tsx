@@ -66,19 +66,14 @@ export default function MyBookings() {
 
   const cancelBooking = async (booking: BookingWithRide) => {
     try {
-      await supabase
+      const { error } = await supabase
         .from('bookings')
         .update({ status: 'cancelled' })
         .eq('id', booking.id);
 
-      // Restore seats
-      await supabase
-        .from('rides')
-        .update({ 
-          available_seats: booking.ride.available_seats + booking.seats_booked,
-          status: 'available'
-        })
-        .eq('id', booking.ride_id);
+      if (error) throw error;
+
+      // Seat restoration is handled atomically by database trigger
 
       setBookings(prev => prev.map(b => 
         b.id === booking.id ? { ...b, status: 'cancelled' } : b
