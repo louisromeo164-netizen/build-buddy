@@ -18,6 +18,8 @@ export default function SearchRides() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
+  const escapePattern = (str: string) => str.replace(/[%_\\]/g, '\\$&');
+
   const searchRides = async () => {
     setLoading(true);
     setSearched(true);
@@ -35,10 +37,12 @@ export default function SearchRides() {
       .order('departure_time', { ascending: true });
 
     if (from.trim()) {
-      query = query.ilike('pickup_location', `%${from.trim()}%`);
+      const escaped = escapePattern(from.trim());
+      query = query.ilike('pickup_location', `%${escaped}%`);
     }
     if (to.trim()) {
-      query = query.ilike('destination', `%${to.trim()}%`);
+      const escaped = escapePattern(to.trim());
+      query = query.ilike('destination', `%${escaped}%`);
     }
 
     const { data, error } = await query;
