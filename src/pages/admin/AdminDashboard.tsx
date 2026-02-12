@@ -67,10 +67,9 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     setLoading(true);
     
-    // Fetch stats
+    // Fetch stats via secure admin-only RPC
     const { data: statsData } = await supabase
-      .from('platform_stats')
-      .select('*')
+      .rpc('get_platform_stats')
       .single();
     
     if (statsData) {
@@ -105,11 +104,12 @@ export default function AdminDashboard() {
     
     if (ridesData) {
       // Fetch driver profiles separately
-      const driverIds = [...new Set(ridesData.map(r => r.driver_id))];
+      const driverIds = [...new Set(ridesData.map(r => r.driver_id))].slice(0, 50);
       const { data: profiles } = await supabase
-        .from('profiles')
+        .from('profiles_public')
         .select('user_id, full_name')
-        .in('user_id', driverIds);
+        .in('user_id', driverIds)
+        .limit(50);
       
       const profileMap = new Map(profiles?.map(p => [p.user_id, p]) || []);
       

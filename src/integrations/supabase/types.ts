@@ -326,6 +326,17 @@ export type Database = {
       }
     }
     Functions: {
+      get_platform_stats: {
+        Args: never
+        Returns: {
+          daily_commission: number
+          total_bookings: number
+          total_commission: number
+          total_rides: number
+          total_users: number
+          weekly_commission: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
