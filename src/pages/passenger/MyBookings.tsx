@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { sanitizeError } from '@/lib/errorUtils';
 import { Booking, Ride, Profile, DriverDetails } from '@/lib/types';
 import { MapPin, Clock, Users, Calendar, X } from 'lucide-react';
 
@@ -80,8 +81,8 @@ export default function MyBookings() {
       ));
 
       toast({ title: 'Booking cancelled' });
-    } catch (error) {
-      toast({ title: 'Failed to cancel', variant: 'destructive' });
+    } catch (error: any) {
+      toast({ title: 'Failed to cancel', description: sanitizeError(error), variant: 'destructive' });
     }
   };
 
