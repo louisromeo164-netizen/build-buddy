@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useAdmin } from '@/hooks/useAdmin';
 import { Shield, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { sanitizeError } from '@/lib/errorUtils';
 
 export default function AdminAuth() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function AdminAuth() {
     if (error) {
       toast({
         title: 'Error',
-        description: error.message,
+        description: sanitizeError(error),
         variant: 'destructive',
       });
       setIsLoading(false);

@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAuth } from '@/hooks/useAuth';
+import { sanitizeError } from '@/lib/errorUtils';
 import { useToast } from '@/hooks/use-toast';
 import { Car, Users, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { UserRole } from '@/lib/types';
@@ -56,7 +57,7 @@ export function AuthForm({ role }: AuthFormProps) {
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.message || 'Something went wrong',
+        description: sanitizeError(error),
         variant: 'destructive',
       });
     } finally {

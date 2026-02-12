@@ -15,6 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { sanitizeError } from '@/lib/errorUtils';
 import { cn } from '@/lib/utils';
 import { MapPin, CalendarIcon, Clock, Users, Banknote } from 'lucide-react';
 
@@ -74,7 +75,7 @@ export default function PostRide() {
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.message || 'Failed to post ride',
+        description: sanitizeError(error),
         variant: 'destructive',
       });
     } finally {

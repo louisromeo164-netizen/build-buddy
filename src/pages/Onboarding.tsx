@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { sanitizeError } from '@/lib/errorUtils';
 import { UserRole } from '@/lib/types';
 import { User, Phone, Car } from 'lucide-react';
 
@@ -92,7 +93,7 @@ export default function Onboarding() {
     } catch (error: any) {
       toast({
         title: 'Error',
-        description: error.message || 'Failed to create profile',
+        description: sanitizeError(error),
         variant: 'destructive',
       });
     } finally {
