@@ -11,26 +11,26 @@ const Index = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
-        <div className="container mx-auto px-4 py-16 relative border-[#c4276d] bg-primary">
+        <div className="container mx-auto px-4 py-16 relative bg-primary-foreground">
           <div className="text-center max-w-3xl mx-auto animate-fade-in">
             <div className="inline-flex items-center gap-2 bg-accent px-4 py-2 rounded-full mb-6">
               <MapPin className="w-4 h-4 text-primary" />
-              <span className="text-primary font-sans text-base font-semibold bg-accent-foreground">dailyRoute Uganda</span>
+              <span className="text-sm font-medium">dailyRoute Uganda</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              <span className="text-primary font-serif">dailyRoute</span>
+              <span className="text-primary">dailyRoute</span>
               <br />Share Rides, Save Money
             </h1>
-            <p className="text-lg text-muted-foreground mb-8">Connect with drivers and passengers heading your way. Safe, affordable rides at just UGX 4,000 per seat.
-
-
+            <p className="text-lg text-muted-foreground mb-8">
+              Connect with drivers and passengers heading your way. 
+              Safe, affordable rides at just UGX 4,000 per seat.
             </p>
           </div>
         </div>
       </div>
 
       {/* Role Selection */}
-      <div className="container mx-auto px-4 py-12 shadow-lg">
+      <div className="container mx-auto px-4 py-12">
         <h2 className="text-2xl font-semibold text-center mb-8">How do you want to use dailyRoute?</h2>
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {/* Driver Card */}
@@ -141,7 +141,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-8 border-t">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>©0751638699, email: louisromeo164@gmail.com</p>
+          <p>© 2026 dailyRoute Uganda. Safe rides, happy journeys.</p>
         </div>
       </footer>
     </div>);
