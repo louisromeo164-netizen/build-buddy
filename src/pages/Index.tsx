@@ -11,33 +11,33 @@ const Index = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
-        <div className="container mx-auto px-4 py-16 relative">
+        <div className="container mx-auto px-4 py-16 relative border-[#c4276d] bg-primary">
           <div className="text-center max-w-3xl mx-auto animate-fade-in">
             <div className="inline-flex items-center gap-2 bg-accent px-4 py-2 rounded-full mb-6">
               <MapPin className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">dailyRoute Uganda</span>
+              <span className="text-primary font-sans text-base font-semibold bg-accent-foreground">dailyRoute Uganda</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              <span className="text-primary">dailyRoute</span>
+              <span className="text-primary font-serif">dailyRoute</span>
               <br />Share Rides, Save Money
             </h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              Connect with drivers and passengers heading your way. 
-              Safe, affordable rides at just UGX 4,000 per seat.
+            <p className="text-lg text-muted-foreground mb-8">Connect with drivers and passengers heading your way. Safe, affordable rides at just UGX 4,000 per seat.
+
+
             </p>
           </div>
         </div>
       </div>
 
       {/* Role Selection */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12 shadow-lg">
         <h2 className="text-2xl font-semibold text-center mb-8">How do you want to use dailyRoute?</h2>
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {/* Driver Card */}
-          <Card 
+          <Card
             className="cursor-pointer hover:shadow-lg transition-all hover:border-primary group animate-slide-up"
-            onClick={() => navigate('/auth/driver')}
-          >
+            onClick={() => navigate('/auth/driver')}>
+
             <CardHeader className="text-center pb-4">
               <div className="mx-auto w-20 h-20 rounded-full bg-accent flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
                 <Car className="w-10 h-10 text-primary" />
@@ -67,11 +67,11 @@ const Index = () => {
           </Card>
 
           {/* Passenger Card */}
-          <Card 
+          <Card
             className="cursor-pointer hover:shadow-lg transition-all hover:border-secondary group animate-slide-up"
             style={{ animationDelay: '0.1s' }}
-            onClick={() => navigate('/auth/passenger')}
-          >
+            onClick={() => navigate('/auth/passenger')}>
+
             <CardHeader className="text-center pb-4">
               <div className="mx-auto w-20 h-20 rounded-full bg-secondary/20 flex items-center justify-center mb-4 group-hover:bg-secondary/30 transition-colors">
                 <Users className="w-10 h-10 text-secondary-foreground" />
@@ -141,11 +141,11 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-8 border-t">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>© 2026 dailyRoute Uganda. Safe rides, happy journeys.</p>
+          <p>©0751638699, email: louisromeo164@gmail.com</p>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
