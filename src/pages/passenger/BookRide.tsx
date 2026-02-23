@@ -10,7 +10,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { sanitizeError } from '@/lib/errorUtils';
 import { Ride } from '@/lib/types';
-import { MapPin, Clock, Users, Car, Star, Banknote, CheckCircle } from 'lucide-react';
+import { MobileMoneyPayment } from '@/components/payments/MobileMoneyPayment';
+import { MapPin, Clock, Users, Car, Star, Banknote, CheckCircle, Phone } from 'lucide-react';
 
 export default function BookRide() {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +22,8 @@ export default function BookRide() {
   const [loading, setLoading] = useState(true);
   const [booking, setBooking] = useState(false);
   const [seats, setSeats] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'mobile_money'>('mobile_money');
+  const [showMomoPayment, setShowMomoPayment] = useState(false);
 
   useEffect(() => {
     const fetchRide = async () => {
@@ -54,7 +57,7 @@ export default function BookRide() {
     fetchRide();
   }, [id]);
 
-  const handleBook = async () => {
+  const handleBook = async (paymentId?: string) => {
     if (!user || !ride) return;
 
     setBooking(true);
@@ -63,16 +66,16 @@ export default function BookRide() {
         ride_id: ride.id,
         passenger_id: user.id,
         seats_booked: seats,
-        status: 'pending',
+        status: paymentId ? 'confirmed' : 'pending',
       });
 
       if (error) throw error;
 
-      // Seat updates are handled atomically by database trigger
-
       toast({
-        title: 'Booking confirmed!',
-        description: 'The driver will be notified of your booking.',
+        title: paymentId ? 'Booking confirmed!' : 'Booking created!',
+        description: paymentId
+          ? 'Payment received. The driver will be notified.'
+          : 'Pay the driver in cash when you meet.',
       });
       navigate('/passenger/bookings');
     } catch (error: any) {
@@ -84,6 +87,10 @@ export default function BookRide() {
     } finally {
       setBooking(false);
     }
+  };
+
+  const handleMomoSuccess = (paymentId: string) => {
+    handleBook(paymentId);
   };
 
   if (loading) {
@@ -217,9 +224,28 @@ export default function BookRide() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-accent/50 text-sm">
-              <Banknote className="w-4 h-4" />
-              <span>Pay cash to the driver</span>
+            <div className="space-y-2">
+              <p className="text-sm font-medium">Payment Method</p>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant={paymentMethod === 'mobile_money' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setPaymentMethod('mobile_money')}
+                  className="gap-2"
+                >
+                  <Phone className="w-4 h-4" />
+                  Mobile Money
+                </Button>
+                <Button
+                  variant={paymentMethod === 'cash' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setPaymentMethod('cash')}
+                  className="gap-2"
+                >
+                  <Banknote className="w-4 h-4" />
+                  Cash
+                </Button>
+              </div>
             </div>
 
             {ride.notes && (
@@ -231,10 +257,33 @@ export default function BookRide() {
           </CardContent>
         </Card>
 
-        <Button className="w-full" size="lg" onClick={handleBook} disabled={booking}>
-          <CheckCircle className="w-4 h-4 mr-2" />
-          {booking ? 'Booking...' : `Confirm Booking - UGX ${totalFare.toLocaleString()}`}
-        </Button>
+        {showMomoPayment ? (
+          <MobileMoneyPayment
+            amount={totalFare}
+            paymentType="booking"
+            referenceId={ride.id}
+            onSuccess={handleMomoSuccess}
+            onCancel={() => setShowMomoPayment(false)}
+          />
+        ) : (
+          <Button
+            className="w-full"
+            size="lg"
+            onClick={() => {
+              if (paymentMethod === 'mobile_money') {
+                setShowMomoPayment(true);
+              } else {
+                handleBook();
+              }
+            }}
+            disabled={booking}
+          >
+            <CheckCircle className="w-4 h-4 mr-2" />
+            {booking ? 'Booking...' : paymentMethod === 'mobile_money'
+              ? `Pay & Book — UGX ${totalFare.toLocaleString()}`
+              : `Confirm Booking — UGX ${totalFare.toLocaleString()}`}
+          </Button>
+        )}
       </div>
     </AppLayout>
   );

@@ -13,11 +13,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useAuth } from '@/hooks/useAuth';
+import { useDriverSubscription } from '@/hooks/useDriverSubscription';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { sanitizeError } from '@/lib/errorUtils';
 import { cn } from '@/lib/utils';
-import { MapPin, CalendarIcon, Clock, Users, Banknote } from 'lucide-react';
+import { MapPin, CalendarIcon, Clock, Users, Banknote, AlertTriangle } from 'lucide-react';
 
 const rideSchema = z.object({
   pickup_location: z.string().min(3, 'Please enter pickup location'),
@@ -32,6 +33,7 @@ type RideFormData = z.infer<typeof rideSchema>;
 
 export default function PostRide() {
   const { user } = useAuth();
+  const { hasActiveSubscription, loading: subLoading } = useDriverSubscription();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +84,33 @@ export default function PostRide() {
       setIsLoading(false);
     }
   };
+
+  if (subLoading) {
+    return (
+      <AppLayout title="Post a Ride">
+        <Card className="animate-pulse"><CardContent className="h-48" /></Card>
+      </AppLayout>
+    );
+  }
+
+  if (!hasActiveSubscription) {
+    return (
+      <AppLayout title="Post a Ride">
+        <Card className="border-destructive/30">
+          <CardContent className="py-12 text-center space-y-4">
+            <AlertTriangle className="w-12 h-12 mx-auto text-destructive" />
+            <h3 className="text-lg font-semibold">Subscription Required</h3>
+            <p className="text-sm text-muted-foreground">
+              You need an active weekly subscription (UGX 6,000) to post rides.
+            </p>
+            <Button onClick={() => navigate('/driver/subscription')}>
+              Subscribe Now
+            </Button>
+          </CardContent>
+        </Card>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout title="Post a Ride">
