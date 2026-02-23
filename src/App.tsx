@@ -13,6 +13,7 @@ import Onboarding from "./pages/Onboarding";
 import DriverHome from "./pages/driver/DriverHome";
 import PostRide from "./pages/driver/PostRide";
 import MyRides from "./pages/driver/MyRides";
+import DriverSubscription from "./pages/driver/Subscription";
 import PassengerHome from "./pages/passenger/PassengerHome";
 import SearchRides from "./pages/passenger/SearchRides";
 import BookRide from "./pages/passenger/BookRide";
@@ -94,6 +95,9 @@ function AppRoutes() {
       } />
       <Route path="/driver/my-rides" element={
         <ProtectedRoute role="driver"><MyRides /></ProtectedRoute>
+      } />
+      <Route path="/driver/subscription" element={
+        <ProtectedRoute role="driver"><DriverSubscription /></ProtectedRoute>
       } />
       <Route path="/driver/profile" element={
         <ProtectedRoute role="driver"><Profile /></ProtectedRoute>

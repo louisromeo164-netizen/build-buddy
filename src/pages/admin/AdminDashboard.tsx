@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useAdmin } from '@/hooks/useAdmin';
-import { DollarSign, Users, Car, TrendingUp, LogOut, Calendar, MapPin } from 'lucide-react';
+import { DollarSign, Users, Car, TrendingUp, LogOut, Calendar, MapPin, Shield, UserCheck, UserX } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface PlatformStats {
@@ -18,6 +18,9 @@ interface PlatformStats {
   total_commission: number;
   weekly_commission: number;
   daily_commission: number;
+  total_subscription_revenue: number;
+  active_drivers: number;
+  inactive_drivers: number;
 }
 
 interface Transaction {
@@ -68,7 +71,7 @@ export default function AdminDashboard() {
     setLoading(true);
     
     // Fetch stats via secure admin-only RPC
-    const { data: statsData } = await supabase
+    const { data: statsData } = await (supabase as any)
       .rpc('get_platform_stats')
       .single();
     
@@ -159,7 +162,7 @@ export default function AdminDashboard() {
 
       <main className="container mx-auto px-4 py-6 space-y-6">
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           <Card>
             <CardHeader className="pb-2">
               <CardDescription className="flex items-center gap-2">
@@ -193,6 +196,21 @@ export default function AdminDashboard() {
           <Card>
             <CardHeader className="pb-2">
               <CardDescription className="flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                Subscription Revenue
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold text-primary">
+                UGX {(stats?.total_subscription_revenue || 0).toLocaleString()}
+              </p>
+              <p className="text-xs text-muted-foreground">Driver subscriptions</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardDescription className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 Total Users
               </CardDescription>
@@ -213,6 +231,28 @@ export default function AdminDashboard() {
             <CardContent>
               <p className="text-2xl font-bold">{stats?.total_rides || 0}</p>
               <p className="text-xs text-muted-foreground">Rides posted</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Driver Activity */}
+        <div className="grid grid-cols-2 gap-4">
+          <Card className="border-success/30">
+            <CardContent className="p-4 flex items-center gap-4">
+              <UserCheck className="w-8 h-8 text-success" />
+              <div>
+                <p className="text-2xl font-bold">{stats?.active_drivers || 0}</p>
+                <p className="text-sm text-muted-foreground">Active Drivers</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-destructive/30">
+            <CardContent className="p-4 flex items-center gap-4">
+              <UserX className="w-8 h-8 text-destructive" />
+              <div>
+                <p className="text-2xl font-bold">{stats?.inactive_drivers || 0}</p>
+                <p className="text-sm text-muted-foreground">Inactive Drivers</p>
+              </div>
             </CardContent>
           </Card>
         </div>

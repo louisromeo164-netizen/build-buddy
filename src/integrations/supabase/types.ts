@@ -329,10 +329,13 @@ export type Database = {
       get_platform_stats: {
         Args: never
         Returns: {
+          active_drivers: number
           daily_commission: number
+          inactive_drivers: number
           total_bookings: number
           total_commission: number
           total_rides: number
+          total_subscription_revenue: number
           total_users: number
           weekly_commission: number
         }[]

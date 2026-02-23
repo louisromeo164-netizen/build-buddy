@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Search, PlusCircle, Calendar, User } from 'lucide-react';
+import { Home, Search, PlusCircle, Calendar, User, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -14,6 +14,7 @@ export function BottomNav() {
     { to: '/driver', icon: Home, label: 'Home' },
     { to: '/driver/post-ride', icon: PlusCircle, label: 'Post Ride' },
     { to: '/driver/my-rides', icon: Calendar, label: 'My Rides' },
+    { to: '/driver/subscription', icon: Shield, label: 'Plan' },
     { to: '/driver/profile', icon: User, label: 'Profile' },
   ];
 
