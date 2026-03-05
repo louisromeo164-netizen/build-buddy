@@ -1,0 +1,1 @@
+REVOKE SELECT ON public.profiles_public FROM anon;
