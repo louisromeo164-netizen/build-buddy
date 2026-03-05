@@ -88,6 +88,78 @@ export type Database = {
         }
         Relationships: []
       }
+      driver_subscriptions: {
+        Row: {
+          amount: number
+          created_at: string
+          driver_id: string
+          expires_at: string
+          id: string
+          payment_method: string | null
+          payment_reference: string | null
+          status: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          driver_id: string
+          expires_at?: string
+          id?: string
+          payment_method?: string | null
+          payment_reference?: string | null
+          status?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          driver_id?: string
+          expires_at?: string
+          id?: string
+          payment_method?: string | null
+          payment_reference?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      mobile_money_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          payment_type: string
+          phone_number: string
+          provider: string
+          reference_id: string | null
+          status: string
+          transaction_ref: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          payment_type: string
+          phone_number: string
+          provider: string
+          reference_id?: string | null
+          status?: string
+          transaction_ref?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          payment_type?: string
+          phone_number?: string
+          provider?: string
+          reference_id?: string | null
+          status?: string
+          transaction_ref?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -326,6 +398,10 @@ export type Database = {
       }
     }
     Functions: {
+      driver_has_active_subscription: {
+        Args: { _driver_id: string }
+        Returns: boolean
+      }
       get_platform_stats: {
         Args: never
         Returns: {
