@@ -398,6 +398,38 @@ export type Database = {
       }
     }
     Functions: {
+      admin_cancel_ride: { Args: { _ride_id: string }; Returns: undefined }
+      admin_get_ride_bookings: {
+        Args: { _ride_id: string }
+        Returns: {
+          booking_id: string
+          created_at: string
+          passenger_name: string
+          seats_booked: number
+          status: string
+        }[]
+      }
+      admin_list_users: {
+        Args: never
+        Returns: {
+          created_at: string
+          email: string
+          full_name: string
+          has_active_subscription: boolean
+          is_suspended: boolean
+          phone_number: string
+          role: string
+          user_id: string
+        }[]
+      }
+      admin_suspend_user: {
+        Args: { _reason?: string; _target_user_id: string }
+        Returns: undefined
+      }
+      admin_unsuspend_user: {
+        Args: { _target_user_id: string }
+        Returns: undefined
+      }
       driver_has_active_subscription: {
         Args: { _driver_id: string }
         Returns: boolean
